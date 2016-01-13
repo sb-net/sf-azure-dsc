@@ -115,57 +115,7 @@
             "storageUri": "[concat('http://', parameters('diagStorageAcct'),'.blob.core.windows.net/')]"
           }
         }
-      },
-
-      "resources": [
-
-        {
-          "apiVersion": "2015-06-15",
-          "type": "extensions",
-          "name": "JsonDomainJoin",
-          "location": "[resourceGroup().Location",
-          "dependsOn": [ "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'), copyindex(1))]" ],
-          "tags": { "displayName": "DomainJoin" },
-          "properties": {
-            "protectedsettings": { "Password": "[parameters('domainJoinPass')]" },
-            "publisher": "Microsoft.Compute",
-            "settings": {
-              "Name": "[parameters('domainToJoin')]",
-              "OUPath": "[ parameters('domainOU') ]",
-              "User": "[ parameters('domainJoinUser') ]",
-              "Restart": "true",
-              "Options": "[variables('domainJoinOptions')]"
-            },
-            "type": "JsonADDomainExtension",
-            "typeHandlerVersion": "1.0"
-          }
-        },
-
-        {
-          "name": "Microsoft.Insights.VMDiagnosticsSettings",
-          "type": "extensions",
-          "location": "[resourceGroup().Location]",
-          "apiVersion": "2015-06-15",
-          "dependsOn": [ "[concat('Microsoft.Compute/virtualMachines/', concat(parameters('vmName'),copyindex(1)))]" ],
-          "tags": { "displayName": "AzureDiag" },
-          "properties": {
-            "publisher": "Microsoft.Azure.Diagnostics",
-            "type": "IaaSDiagnostics",
-            "typeHandlerVersion": "1.5",
-            "autoUpgradeMinorVersion": true,
-            "settings": {
-              "xmlCfg": "[base64(concat(variables('wadcfgxstart'), variables('wadmetricsresourceid'), concat(parameters('vmName'),copyindex(1)), variables('wadcfgxend')))]",
-              "storageAccount": "[parameters('diagStorageAcct')]"
-            },
-
-            "protectedSettings": {
-              "storageAccountName": "[parameters('diagStorageAcct')]",
-              "storageAccountKey": "[listkeys(variables('accountid'), '2015-06-15').key1]",
-              "storageAccountEndPoint": "https://core.windows.net"
-            }
-          }
-        }
-      ]
+      }
     }
   ]
 }
